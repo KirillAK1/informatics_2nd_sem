@@ -25,7 +25,7 @@ int prove(polygon *poly);
 void search_coords(polygon *poly);
 int Prove_Coords(polygon *poly);
 void create_polygon(polygon *&adres, int &qty, polygon *poly);
-void delete_polygon(polygon *poly, int &qty,int del_index);
+void delete_polygon(polygon *&adres, int &qty, int del_index);
 void maxMenu(polygon *poly,int qty);
 double maxParam(polygon *poly,int qty, int choice);
 void PolyOutput(polygon *poly,int qty, polygon *adres);
@@ -229,29 +229,29 @@ void create_polygon(polygon *&adres, int &qty, polygon *poly)
       adres = tempArray;
       qty++;
 }
-void delete_polygon(polygon *adres, int &qty,int del_index)
+void delete_polygon(polygon *&adres, int &qty, int del_index)
 {
- if(del_index >= 0 && del_index < qty)
- {
-     polygon* newTempArray = new polygon[qty - 1];
-     int newIndex = 0;
-     for (int i=0; i<qty; i++)
-     {
-         if(i != del_index)//проверка на удалённый многоугольник
-         {
-             newTempArray[newIndex] = adres[i];
-             newIndex++;
-         }
-     }
-     delete[] adres;
-     adres = newTempArray;
-     qty--;
-     cout<<"Poiygon deleted\n";
- }
- else
- {
-     cout<<"\nError\tNO SUCH POLYGON\n";
- }
+    if (del_index >= 0 && del_index < qty)
+    {
+        polygon* newTempArray = new polygon[qty - 1];
+        int newIndex = 0;
+        for (int i = 0; i < qty; i++)
+        {
+            if (i != del_index)
+            {
+                newTempArray[newIndex] = adres[i];
+                newIndex++;
+            }
+        }
+
+        delete[] adres;
+        adres = newTempArray;
+        qty--;
+        cout << "Polygon deleted\n";
+    }
+    else {
+        cout << "\nError\tNO SUCH POLYGON\n";
+    }
 }
 double maxParam(polygon *poly,int qty, int choice)
 {
