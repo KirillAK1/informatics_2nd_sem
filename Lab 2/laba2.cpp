@@ -21,11 +21,11 @@ public:
     double nrefuel; //количество дозаправок на путь
     double CalculateIntake()
         {
-            return pow(engpow,1/3)+sqrt(engpow)-6.25;
+            return fabs(pow(engpow, 1 / 3) + sqrt(engpow) - 6.25);
         }
     double CalculateSpeed()
         {
-            return sqrt(engpow)*(70/nwheels-2.5);
+            return fabs(sqrt(engpow) * ((70 / double(nwheels)) - 2.5));
         }
     double CalculateRaceTime(double race)
         {
