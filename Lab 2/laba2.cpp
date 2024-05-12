@@ -1,8 +1,11 @@
 #include <iostream>
 #include <string>
+#include <limits>
 #include "cmath"
 using namespace std;
 double InputProve(double var);
+int InputProve(int var);
+int qty = 0;
 class Vehicle
 {
     double tankcapacity;// объём бака
@@ -28,9 +31,13 @@ public:
         {
             return (race/speed);
         }
-    double CalculateRefuel()
+    double CalculateRefuel(double raceLength)
         {
-            return ((mileage*(engintake/100))/tankcapacity);
+            double nrefuel = ((mileage*(engintake/100))/tankcapacity);
+            if(nrefuel>1)
+                return ceil(nrefuel);
+            else
+                return floor(nrefuel);
         }
     void setTankcapacity(double tank)
         {
@@ -49,7 +56,7 @@ public:
             nwheels = wheels;
         }
 
-    Vehicle ()
+    Vehicle()
     {
          name="";
          tankcapacity=0;
@@ -79,21 +86,21 @@ public:
         setTankcapacity (tank);
         speed = CalculateSpeed();
         engintake = CalculateIntake();
-        cout << "\nThe car has been created" << endl;
-    }
+        cout << "\nThe car has been created" << endl;}
 
-    ~vehicle()
-    {
-        cout << "Destruction of "<<name<<endl;
-    }
-
+     ~Vehicle()
+     {
+          cout << "Destruction of " << name << endl;
+     }
+ void output();
+  void time_display();
 };
 
 
 void clean(int var =1);
 int menu(int &flag);
 void create_vehicle(Vehicle *&adres, int &qty, Vehicle cars);
-vehicle *RatingResults(Vehicle *&adres, int qty);
+Vehicle *RatingResults(Vehicle *&adres, int qty);
 void outputResults(Vehicle *&adres, int qty);
 
 int main()
@@ -103,40 +110,116 @@ int main()
     double trackLen = 0;
     int flag = 1;
     int rez = 0;
-    while (flag == 1) {
+    while (flag == 1)
+        {
     int choice = 10;
     choice = menu(rez);
-    if ((choice > 5) || (choice < 0)) {
+    if ((choice > 5) || (choice < 0))
+    {
       cout << "\nError, try another number!\n";
     }
-    switch (choice) {
-    case (0): {
+    switch (choice){
+{
+    case (0):
+    {
       cout << "Are you sure you want to get out?\n1-yes\n0-go back\n";
       int exit = 2;
       exit = InputProve(exit);
-      if (exit == 1) {
+      if (exit == 1)
+      {
         flag = 0;
         break;
-      } else {
+      }
+       else
+      {
         clean();
       }
       break;
     }
-      delete[] adres;
+
+      case (1):
+    {
+      clean();
+      string vehicle_name = "";
+      double tank = 0;
+      double power = 0;
+      int Nwheels = 0;
+      Vehicle cars(vehicle_name, tank, power, Nwheels);
+      clean();
+      create_vehicle(adres, qty, cars);
+      rez = 0;
       break;
+    }
 
+    case (2):
+    {
+      clean();
+      for (int i = 0; i < qty; i++)
+      {
+        cout << adres[i].name << endl;
+        adres[i].output();
+      }
+      break;
+    }
 
+     case (3):
+    {
+      clean();
+      cout << "Enter the length of the track (km): ";
+      trackLen = InputProve(trackLen);
+      rez = 0;
+      break;
+    }
 
+     case (4):
+    {
+      clean();
+      if (trackLen == 0)
+      {
+        cout << "You haven't entered the length of the track!\n";
+        rez = 0;
+        break;
+      }
+      else
+      {
+        for (int i = 0; i < qty; i++)
+        {
+          adres[i].time = adres[i].CalculateRaceTime(trackLen);
+          adres[i].mileage = trackLen;
+          adres[i].nrefuel = adres[i].CalculateRefuel(trackLen);
+        }
+      }
+      break;
+    }
+
+    case (5):
+    {
+      clean();
+      outputResults(*&adres, qty);
+      break;
+    }
+    default:
+      clean();
+      break;
+    }
+ delete[] adres;
+      break;
+    }
+
+    }
     return 0;
 }
 
-void clean(int var)
-{
-    for(int i=0; i<100; i=i+1)
+
+
+
+    void clean(int var)
     {
-        cout<<"\n";
+        for (int i = 0; i < 8; i = i + 1)
+        {
+            cout << "\n";
+        }
     }
-}
 
 int menu(int &rez)
 {
@@ -156,3 +239,94 @@ int menu(int &rez)
   return choice;
 }
 
+void create_vehicle(Vehicle *&adres, int &qty, Vehicle cars)
+{
+  Vehicle *tempArray;
+  if (adres != nullptr)
+    {
+    tempArray = new Vehicle[qty + 1];
+    for (int i = 0; i < qty; i++)
+    {
+      tempArray[i] = adres[i];
+    }
+    delete[] adres;
+  }
+   else
+    {
+    tempArray = new Vehicle[1];
+    }
+  tempArray[qty] = cars;
+  adres = tempArray;
+  qty++;
+}
+
+Vehicle *RatingResults(Vehicle *&adres, int qty)
+{
+  Vehicle *results = new Vehicle[qty];
+  Vehicle *rez_copy = new Vehicle[1];
+  for (int i = 0; i < qty; i++) {
+    results[i] = adres[i];
+  }
+  for (int i = 0; i < qty; i++) {
+    for (int j = 0; j < qty; j++) {
+      if ((results[i].time - results[j].time < 0) &&
+          (results[i].nrefuel - results[i].nrefuel <= 0)) {
+        rez_copy[0] = results[i];
+        results[i] = results[j];
+        results[j] = rez_copy[0];
+      }
+    }
+  }
+  delete[] rez_copy;
+  return results;
+}
+
+void outputResults(Vehicle *&adres, int qty) {
+  Vehicle *results = RatingResults(adres, qty);
+  for (int i = 0; i < qty; i++) {
+    cout << results[i].name << endl;
+    results[i].time_display();
+    cout << "Refuel times: " << int(ceil(results[i].nrefuel)) << endl;
+  }
+  delete[] results;
+}
+
+void Vehicle::output() {
+  cout << "Number of wheels: " << nwheels << ";\n"
+       << "power of engine: " << engpow << " HP;\n"
+       << "speed: " << speed << " km/h;\n"
+       << "Engine intake: " << engintake << " l/100km;\n"
+       << "mileage: " << mileage << " km;" << endl;
+}
+
+double InputProve(double var) {
+  cin >> var;
+  if (cin.fail() || var <= 0) {
+    while (!(cin >> var) || var <= 0) {
+      cout << "Uncorrect, try again\n";
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+  }
+  return var;
+}
+
+int InputProve(int var) {
+  cin >> var;
+  if (cin.fail() || var < 0) {
+    while (!(cin >> var) || var < 0) {
+      cout << "Uncorrect, try again\n";
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+  }
+  return var;
+}
+void Vehicle ::time_display() {
+  double t = this->time;
+  int hours = static_cast<int>(t);
+  double cur_time = (t - hours) * 60;
+  int minutes = static_cast<int>((cur_time));
+  int seconds = static_cast<int>((cur_time - minutes) * 60);
+  cout << "TIME: " << hours << ":" << minutes << ":" << seconds << endl;
+}
