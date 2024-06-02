@@ -12,9 +12,9 @@ class Vehicle
     double speed; // скорость
     double engintake; // двигатель потребление литр/км
     double engpow; // двигатель мощность в лошадинных силах
+    int nwheels; // колёса
 
 public:
-    int nwheels; // колёса
     double mileage; //пробег
     double time; // время в пути в часах
     string name;
@@ -72,21 +72,14 @@ public:
     Vehicle(string vehicle_name, double tank, double power, int wheels)
     {
         mileage = time = nrefuel = 0;
-        cout << "\nEnter name of vehicle: ";
-        cin >> vehicle_name;
-        setName(vehicle_name);
-        cout << "\nEnter number of wheels: ";
-        cin >> wheels;
-        setNwheels (wheels);
-        cout << "Power of the engine:";
-        power = InputProve(power);
-        setEngpow(power);
-        cout << "\nEnter tank capacity: ";
-        cin >> tank;
-        setTankcapacity (tank);
-        speed = CalculateSpeed();
-        engintake = CalculateIntake();
-        cout << "\nThe car has been created" << endl;}
+    name = vehicle_name;
+    nwheels = wheels;
+    engpow = power;
+    tankcapacity = tank;
+    speed = CalculateSpeed();
+    engintake = CalculateIntake();
+    cout << "\nCar added successfully!" << endl;
+    }
 
      ~Vehicle()
      {
@@ -144,6 +137,15 @@ int main()
       double tank = 0;
       double power = 0;
       int Nwheels = 0;
+      cout << "Name of the car: ";
+      cin>> vehicle_name;
+      cout << "Number of wheels: ";
+    Nwheels = InputProve(Nwheels);
+    cout << "Power of the engine (HP): "; // horse power
+    power = InputProve(power);
+    cout << "Tank capacity: ";
+    tank = InputProve(tank);
+
       Vehicle cars(vehicle_name, tank, power, Nwheels);
       clean();
       create_vehicle(adres, qty, cars);
@@ -174,7 +176,7 @@ int main()
      case (4):
     {
       clean();
-      if (trackLen == 0)
+      if (trackLen <= 0)
       {
         cout << "You haven't entered the length of the track!\n";
         rez = 0;
