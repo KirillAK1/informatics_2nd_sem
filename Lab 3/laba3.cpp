@@ -378,7 +378,7 @@ int InputProve(int var)
 }
 
 
-int wheel::check_status(double mileage, double speed)
+int Wheel::check_status(double mileage, double speed)
 {
   double ratio = (1/(mileage*sqrt(speed)));
   if (ratio>=0.5)
@@ -413,7 +413,7 @@ int wheel::check_status(double mileage, double speed)
   }*/
 
 
-  void wheel ::output()
+  void Wheel ::output()
   {
   if (status == 1)
   {
@@ -426,22 +426,22 @@ int wheel::check_status(double mileage, double speed)
 }
 
 
-void engine ::output()
+void Engine ::output()
 {
-  cout << "engine power: " << engPow << " HP;" << endl;
+  cout << "engine power: " << engpow << " HP;" << endl;
   cout << "engine intake: " << engIntake << " l/100km;" << endl;
 }
 
-void engine::def_engine(double power)
+void Engine::def_engine(double power)
 {
   cout << "Engine power in HP: ";
-  power = InputProve(power);
-  engPow = power;
-  engIntake = calculateIntake();
+  power = inputprove(power);
+  engpow = power;
+  engintake = calculateIntake();
 }
 
 
-void fuel_system ::calculate_cur_fuel(double engintake, double mileage,double nrefuel)
+void Fuel_system ::calculate_cur_fuel(double engintake, double mileage,double nrefuel)
 { //расчёт текущего обЪёма топлива
   if (nrefuel == 0) {
     current_fuel=double(tankcapacity - ((engintake / 100) * mileage));
@@ -451,21 +451,21 @@ void fuel_system ::calculate_cur_fuel(double engintake, double mileage,double nr
 }
 
 
-void fuel_system ::def_fuel_system(double capacity, double engIntake,double mileage)
+void Fuel_system ::def_fuel_system(double capacity, double engIntake,double mileage)
 {
   cout << "fuel capacity: ";
-  capacity = InputProve(capacity);
-  TankCapacity = capacity;
+  capacity = inputprove(capacity);
+  tankcapacity = capacity;
   current_fuel = capacity;
 }
 
-void fuel_system ::output()
+void Fuel_system ::output()
 {
   cout << "fuel capacity: " << TankCapacity << "l" << endl;
   cout << "current fuel: " << current_fuel << "l" << endl;
 }
 
-void vehicle::output()
+void Vehicle::output()
 {
   cout << "Number of wheels: " << nwheels << ";\n"
        << "Damaged wheels: " << damaged_wheels << ";\n"
@@ -475,7 +475,7 @@ void vehicle::output()
   fuel_system::output();
 }
 
-void vehicle ::time_display()
+void Vehicle ::time_display()
 {
   double t = this->time;
   int hours = int(t);
@@ -485,22 +485,22 @@ void vehicle ::time_display()
   cout << "TIME: " << hours << ":" << minutes << ":" << seconds << endl;
 }
 
-void vehicle ::calculateSpeed()
+void Vehicle ::calculateSpeed()
 {
   if (damaged_wheels == 0) {
-speed= double(fabs(sqrt(engpow) * (70.0 / double(Nwheels) - 2.5) * (current_fuel / 100.0)));
+speed= double(fabs(sqrt(engpow) * (70.0 / double(nwheels) - 2.5) * (current_fuel / 100.0)));
  }
  else
  {
-   speed = (fabs(sqrt(engpow) * (70.0 / double(Nwheels) - 2.5) * (current_fuel / 100.0))/(pow(2., double(damaged_wheels))));
+   speed = (fabs(sqrt(engpow) * (70.0 / double(nwheels) - 2.5) * (current_fuel / 100.0))/(pow(2., double(damaged_wheels))));
      }
   }
 
 
-  void vehicle ::number_of_damaged_wheels()
+  void Vehicle ::number_of_damaged_wheels()
   {
   int count = 0;
-  for (int i = 0; i < Nwheels; i++)
+  for (int i = 0; i < nwheels; i++)
   {
     if (ptr_wheel[i].get_status() == 1)
     {
@@ -510,11 +510,11 @@ speed= double(fabs(sqrt(engpow) * (70.0 / double(Nwheels) - 2.5) * (current_fuel
   damaged_wheels = count;
 }
 
-void vehicle ::calculateRefuel(double raceLength)
+void Vehicle ::calculateRefuel(double raceLength)
 {
-  double Refuel = (raceLength * (engIntake / 100)) / TankCapacity;
-  if (Refuel > 1)
-    this->NRefuel= ceil(Refuel);
+  double refuel = (raceLength * (engintake / 100)) / tankcapacity;
+  if (refuel > 1)
+    this->nrefuel= ceil(refuel);
   else
-    this->NRefuel= floor(Refuel);
+    this->nrefuel= floor(refuel);
 }
