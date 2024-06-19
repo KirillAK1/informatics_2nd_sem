@@ -28,7 +28,7 @@ public:
       status=0;
       current_mileage=0;
     };
-virtual ~Wheel(){};//требуется для корректной работы компилятора
+ ~Wheel(){};//требуется для корректной работы компилятора
 double def_wheel(double mileage, double speed)
   {
     if (mileage==0.)
@@ -191,11 +191,11 @@ public:
   int getNwheels() { return nwheels; }
   double get_current_fuel() { return current_fuel; }
   void number_of_damaged_wheels();
-  void output();
   friend Vehicle *RatingResults(int qty);
   friend void outputResults(vector <Vehicle> car,int qty);
 
-   friend ostream &operator<<(ostream &stream, const Vehicle &obj) {
+   friend ostream &operator<<(ostream &stream, const Vehicle &obj)
+   {
     return stream <<"\n"<<"Name: "<<obj.name<<"\n"
       << "Number of wheels: " << obj.nwheels << ";\n"
                   << "Damaged wheels: " << obj.damaged_wheels << ";\n"
@@ -205,7 +205,7 @@ public:
                   << "current fuel: " << obj.current_fuel << " l\n"
                   << "engine power: " << obj.engpow << " HP;\n"
                   << "engine intake: " << obj.engintake << " l/100km;" << endl;
-  }
+   }
 
 
    friend istream &operator >> (istream &stream,Vehicle& obj)
@@ -274,8 +274,8 @@ Vehicle& operator=(const Vehicle& other)
 };
 
 
-  int allfinished(vector<Vehicle> &v,double trackLen,int circles);
-  int skip(vector<int> skip_id, int i);
+  bool allfinished(vector<Vehicle> &v,double trackLen,int circles);
+
 
   vector<Vehicle>RatingResults(vector<Vehicle> v);
   void outputResults(vector<Vehicle> v);
@@ -324,17 +324,6 @@ Vehicle& operator=(const Vehicle& other)
        case (1):
     {
       clean();
-      /*string vehicle_name = "";
-      cout << "\nName of the car: ";
-      cin >> vehicle_name;
-      int Nwheels = 0;
-      cout << "Number of wheels: ";
-      Nwheels = InputProve(Nwheels);
-      while ((Nwheels < 2) || (Nwheels == 5) || (Nwheels == 7)) {
-        cout << "Uncorrect number of wheels! try again:" << endl;
-        Nwheels = InputProve(Nwheels);
-      }
-      vehicle addcar(vehicle_name, Nwheels);*/
       Vehicle addcar;
       cin>>addcar;
       cars.push_back(addcar);
@@ -551,36 +540,6 @@ int InputProve(int var)
   return var;
 }
 
-/*void Wheel :: def_wheel(double mileage, double speed)
-{
-  if (mileage==0.) {
-    current_mileage=0.;
-    status=0.;
-  }
-  else{
-    current_mileage = mileage;
-    status = check_status(current_mileage,speed);
-  }
-}*/
-
-/*int wheel::check_status(double mileage, double speed) {
-  if (status == 0){
-  double ratio = 1/(mileage*0.01)*sqrt(speed);
-  if (ratio>=0.5)
-  {
-    //cout<< "Wheel is not damaged"<<endl;
-    return 0;
-  }
-  else
-  {
-    //cout<<"Wheel is damaged"<<endl;
-    return 1;
-  }
-  }
-  else return 1;
-}*/
-
-
     bool Wheel::check_status(double mileage, double speed)
     {
   if (status == 0)
@@ -704,7 +663,7 @@ void Vehicle::reset()
    cout<<"\n"<<name<<" reseted"<<endl;
  }
 
- int allfinished(vector<Vehicle> &v,double trackLen,int circles)
+ bool allfinished(vector<Vehicle> &v,double trackLen,int circles)
 {
   int count=0;
   for (int i=0;i<v.size();i++)
