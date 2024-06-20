@@ -67,7 +67,7 @@ protected:
   double current_fuel; //текущий обЪём топлива литры l;
 public:
   double tankcapacity; //обЪём бака литры l
-  void calculate_cur_fuel(double engintake, double mileage, double NRefuel);
+  void calculate_cur_fuel(double engintake, double mileage, double nrefuel);
   Fuel_system()
   {
       tankcapacity=0;
