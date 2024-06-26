@@ -20,7 +20,7 @@ void clean(int var = 1);
 class Wheel
 {
   double current_mileage;
-  bool status; //ïîâðåæäåíî/íåïîâðåæäåíî 1/0
+  bool status;
 public:
   bool check_status(double mileage, double speed);
   Wheel()
@@ -28,7 +28,7 @@ public:
       status=0;
       current_mileage=0;
     };
- ~Wheel(){};//требуется для корректной работы компилятора
+ ~Wheel(){};
 double def_wheel(double mileage, double speed)
   {
     if (mileage==0.)
@@ -57,8 +57,8 @@ double def_wheel(double mileage, double speed)
 class Engine
 {
 protected:
-  double engpow; //ìîùíîñòü äâèãàòåëÿ HP horsepower
-  double engintake; //ïîòðåáëåíèå äâèãàòåëÿ ëèòðîâ/êì l/km
+  double engpow; //HP horsepower
+  double engintake;
 public:
 double calculateIntake()
  {
