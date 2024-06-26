@@ -453,8 +453,26 @@ int InputProve(int var)
   return var;
 }
 
-
-bool Wheel::check_status(double speed)
+ bool Wheel::check_status(double speed)
+    {
+  if (status == 0)
+  {
+  int end = ceil(sqrt(current_mileage))+ceil(sqrt(speed));
+  int start=-1000;//компенсирую большое кол-во итераций
+  int ratio = ceil(((current_mileage)*(sqrt(speed)+1)));
+  int damageProb = rand() % (end - (start)+ratio)+start;
+  if (damageProb - end>=0)
+    {
+      return 1;
+    }
+    else
+    {
+      return 0;
+    }
+  }
+  else return 1;
+}
+/*bool Wheel::check_status(double speed)
 {
   double ratio = (1/(current_mileage*sqrt(speed)));
   if (ratio>=0.5)
@@ -467,7 +485,7 @@ bool Wheel::check_status(double speed)
     //cout<<"Wheel is damaged"<<endl;
     return true;
   }
-}
+}*/
 
   void Wheel ::output()
   {
