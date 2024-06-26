@@ -8,9 +8,9 @@
 #include <algorithm>
 #include <iomanip>
 using namespace std;
-double Refuel_time=0.0003;//примерно 1 секунда
-double Change_time=0.008;//примерно 30 секунд
-double dt=0.0003;
+const double Refuel_time=0.0003;//примерно 1 секунда
+const double Change_time=0.008;//примерно 30 секунд
+const double dt=0.0003;
 double InputProve(double var);
 int InputProve(int var);
 int menu(int &rez);

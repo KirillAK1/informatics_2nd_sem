@@ -15,7 +15,7 @@ class Wheel
   double current_mileage;
   bool status; //повреждено/неповреждено 1/0
 public:
-  bool check_status(double speed);
+  bool check_status(double mileage, double speed);
   Wheel()
     {
       status=0;
@@ -23,11 +23,10 @@ public:
     };
 
 
-   Wheel (double mileage)
+   Wheel (double mileage, double speed)
   {
     current_mileage = mileage;
-    status = 0;
-    //status = check_status(mileage,speed);
+    status = check_status(mileage,speed);
    // return current_mileage;
   }
 
@@ -69,6 +68,8 @@ double calculateIntake()
 
 Engine (double power)
 {
+  cout << "Engine power in HP: ";
+  power = InputProve(power);
   engpow = power;
   engintake = calculateIntake();
 }
@@ -283,15 +284,10 @@ void create_Vehicle(Vehicle *&adres, int &qty, Vehicle cars);
       break;
     }
     case (3):
-        {
+    {
       clean();
       cout << "Enter the length of the track (km): ";
       trackLen = InputProve(trackLen);
-      while(trackLen<=0.001)
-        {
-          cout<<"Length i s less than 1 m. try again"<<endl;
-          trackLen = InputProve(trackLen);
-        }
       rez = 0;
       break;
     }
@@ -312,8 +308,7 @@ void create_Vehicle(Vehicle *&adres, int &qty, Vehicle cars);
           adres[i].setMileage(trackLen);
           for (int j = 0; j < adres[i].getNwheels(); j++)
           {
-          adres[i].ptr_Wheel[j]=Wheel(trackLen);
-          adres[i].ptr_Wheel[j].check_status(adres[i].get_speed());
+          adres[i].ptr_Wheel[j]=Wheel(trackLen,adres[i].get_speed());
           }
           adres[i].number_of_damaged_wheels();
           adres[i].calculateRefuel(trackLen);
@@ -454,9 +449,9 @@ int InputProve(int var)
 }
 
 
-bool Wheel::check_status(double speed)
+bool Wheel::check_status(double mileage, double speed)
 {
-  double ratio = (1/(current_mileage*sqrt(speed)));
+  double ratio = (1/(mileage*sqrt(speed)));
   if (ratio>=0.5)
   {
     //cout<< "Wheel is not damaged"<<endl;
@@ -527,15 +522,14 @@ void Vehicle ::time_display()
 
 void Vehicle ::calculateSpeed()
 {
-  if (damaged_wheels == 0)
- {
+  if (damaged_wheels == 0) {
 speed= double(fabs(sqrt(engpow) * (70.0 / double(nwheels) - 2.5) * (current_fuel / 100.0)));
  }
  else
  {
-    speed = (fabs(sqrt(engpow) * (70.0 / double(nwheels) - 2.5) * (current_fuel / 100.0))/(pow(2., double(damaged_wheels))));
- }
-}
+   speed = (fabs(sqrt(engpow) * (70.0 / double(nwheels) - 2.5) * (current_fuel / 100.0))/(pow(2., double(damaged_wheels))));
+     }
+  }
 
 
   void Vehicle ::number_of_damaged_wheels()
