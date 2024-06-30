@@ -260,17 +260,6 @@ public:
       return stream;
     }
 
-Vehicle& operator=(const Vehicle& other)
-{
-  name = other.name;
-  nwheels = other.nwheels;
-  speed = other.speed;
-  mileage = other.mileage;
-  current_mileage=other.current_mileage;
-  current_circles=other.current_circles;
-  time=other.time;
-  return *this;
-}
 };
 
 
@@ -518,10 +507,11 @@ void outputResults(vector<Vehicle> v)
     {
   cin >> var;
   if (cin.fail() || var <= 0) {
-    while (!(cin >> var) || var <= 0) {
+    while (!(cin >> var) || var <= 10^-100) {
       cout << "Uncorrect, try again\n";
       cin.clear();
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
     }
   }
   return var;

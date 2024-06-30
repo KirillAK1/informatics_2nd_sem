@@ -512,7 +512,7 @@ void Fuel_system ::calculate_cur_fuel(double engintake, double mileage,double nr
   if (nrefuel == 0) {
     current_fuel=double(tankcapacity - ((engintake / 100) * mileage));
   } else {
-    current_fuel=(((nrefuel)*tankcapacity) - ((engintake / 100) * mileage));
+    current_fuel=(abs(((nrefuel)*tankcapacity) - ((engintake / 100) * mileage)));
   }
 }
 
